@@ -26,24 +26,24 @@ public class TelaPrincipal {
         topPanel.add(titleLabel);
 
         
-        JButton fichaButton = new JButton("Consultar Ficha");
-        JButton examesButton = new JButton("Consultar Exames");
+        JButton botaoFicha = new JButton("Consultar Ficha");
+        JButton botaoExame = new JButton("Consultar Exames");
 
         
-        fichaButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        examesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botaoFicha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botaoExame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         mainPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
-        mainPanel.add(fichaButton);
+        mainPanel.add(botaoFicha);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
-        mainPanel.add(examesButton);
+        mainPanel.add(botaoExame);
 
         
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(mainPanel, BorderLayout.CENTER);
 
 
-        fichaButton.addActionListener(new ActionListener() {
+        botaoFicha.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
@@ -51,7 +51,7 @@ public class TelaPrincipal {
             }
         });
 
-        examesButton.addActionListener(new ActionListener() {
+        botaoExame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             
