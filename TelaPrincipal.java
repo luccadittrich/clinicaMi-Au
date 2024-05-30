@@ -15,7 +15,6 @@ public class TelaPrincipal {
 
         
         JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.BLUE);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         
