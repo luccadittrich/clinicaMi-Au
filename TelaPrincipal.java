@@ -21,7 +21,7 @@ public class TelaPrincipal {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         JLabel titleLabel = new JLabel("Tela Principal");
-        titleLabel.setForeground(Color.WHITE); 
+        titleLabel.setForeground(Color.BLACK); 
         titleLabel.setFont(new Font("Raleway", Font.BOLD, 15));
         topPanel.add(titleLabel);
 
