@@ -8,9 +8,9 @@ import java.sql.Statement;
 
 public class MySQLConnection {
     public static void main(String[] args) {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/db_veterinaria";
-        String username = "teste"; // Substitua pelo seu nome de usuário
-        String password = "usjt";  // Substitua pela sua senha
+        String jdbcUrl = "jdbc:mysql://localhost:3306/clinica_miau";
+        String username = "root"; // Substitua pelo seu nome de usuário
+        String password = "123456";  // Substitua pela sua senha
 
         Connection connection = null;
         Statement statement = null;
