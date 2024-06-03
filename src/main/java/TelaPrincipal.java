@@ -41,7 +41,10 @@ public class TelaPrincipal {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Abre a janela do Prontuário Animal
-                JOptionPane.showMessageDialog(frame, " não implementado.");
+                //JOptionPane.showMessageDialog(frame, " não implementado.");
+                frame.dispose();
+
+                new ProntuarioAnimal();
             }
         });
 
