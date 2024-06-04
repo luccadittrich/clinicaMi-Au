@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import main.java.ProntuarioAnimal;
 
 public class TelaPrincipal {
 
@@ -47,7 +46,7 @@ public class TelaPrincipal {
                 frame.dispose();
 
                 // Abre a janela do Prontuário Animal
-                new ProntuarioAnimal();
+                //JOptionPane.showMessageDialog(frame, " não implementado.");
             }
         });
 
