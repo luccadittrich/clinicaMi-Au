@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import main.java.ProntuarioAnimal;
 
 public class TelaPrincipal {
 
@@ -37,11 +38,16 @@ public class TelaPrincipal {
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(mainPanel, BorderLayout.CENTER);
 
-        botaoFicha.addActionListener(new ActionListener() {
+        JButton btnAbrirProntuario = new JButton("Abrir Prontuário");
+        btnAbrirProntuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Fecha a janela atual
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+                frame.dispose();
+
                 // Abre a janela do Prontuário Animal
-                JOptionPane.showMessageDialog(frame, " não implementado.");
+                new ProntuarioAnimal();
             }
         });
 

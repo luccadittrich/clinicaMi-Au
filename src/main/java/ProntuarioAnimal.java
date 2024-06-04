@@ -3,22 +3,23 @@ package main.java;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.*;
 
 public class ProntuarioAnimal extends JFrame {
 
     // Campos de texto e outros componentes
-    private JTextField txtIdAnimal, txtNome, txtEspecie, txtRaca, txtCor, txtPeso, txtCpfTutor, txtIdade;
+    private JTextField campoIdAnimal, campoNome, campoEspecie, campoRaca, campoCor, campoPeso, campoCpfTutor, campoIdade;
 
-    // Simulação de banco de dados de animais
-    private Map<String, Animal> animaisDb;
+    // Configurações do banco de dados
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/db_veterinaria";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "usjt";
 
     public ProntuarioAnimal() {
-        // Inicializa o "banco de dados"
-        initDatabase();
-
         // Configurações da janela
         setTitle("Ficha");
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Inicia a janela em tela cheia
@@ -32,100 +33,92 @@ public class ProntuarioAnimal extends JFrame {
         setVisible(true);
     }
 
-    private void initDatabase() {
-        animaisDb = new HashMap<>();
-        animaisDb.put("1", new Animal(1, "Bidu", "Cachorro", "Labrador", "Marrom", "123456789", 30, 5));
-        animaisDb.put("2", new Animal(2, "Garfield", "Gato", "Persa", "Laranja", "987654321", 5, 3));
-        animaisDb.put("3", new Animal(3, "Nemo", "Peixe", "Palhaço", "Laranja e Branco", "123123123", 1, 2));
-        // Adicione mais animais conforme necessário
-    }
-
     private void initComponents() {
         // Inicializa os componentes
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Fundo azul
-        //getContentPane().setBackground(new Color(33, 72, 193));
-
-        // Imagem no topo
-        JLabel lblImagem = new JLabel();
-        lblImagem.setPreferredSize(new Dimension(200, 200)); // Ajusta o tamanho do JLabel da imagem
-
-        ImageIcon imageIcon = new ImageIcon("img/4.png"); // Substitua pelo caminho das suas imagens
-        lblImagem.setIcon(imageIcon);
+        JButton btnVoltar = new JButton("Voltar à Tela Principal");
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new TelaPrincipal(); // Abre a tela principal
+                dispose(); // Fecha a tela
+            }
+        });
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 20, 10);
-        add(lblImagem, gbc);
 
         gbc.gridwidth = 1; // Reseta o gridwidth
 
         // Informações Básicas do Animal
-        JLabel lblIdAnimal = new JLabel("ID do Animal:");
-        lblIdAnimal.setForeground(Color.BLACK);
-        txtIdAnimal = new JTextField(20);
-        txtIdAnimal.addActionListener(new ActionListener() {
-            //@Override
+        JLabel labelIdAnimal = new JLabel("ID do Animal:");
+        labelIdAnimal.setForeground(Color.BLACK);
+        campoIdAnimal = new JTextField(20);
+        campoIdAnimal.addActionListener(new ActionListener() {
+            // @Override
             public void actionPerformed(ActionEvent e) {
                 preencherInformacoesAnimal();
             }
         });
 
-        JLabel lblNome = new JLabel("Nome:");
-        lblNome.setForeground(Color.BLACK);
-        txtNome = new JTextField(20);
-        txtNome.setEditable(false);
+        JLabel labelNome = new JLabel("Nome:");
+        labelNome.setForeground(Color.BLACK);
+        campoNome = new JTextField(20);
+        campoNome.setEditable(false);
 
-        JLabel lblEspecie = new JLabel("Espécie:");
-        lblEspecie.setForeground(Color.BLACK);
-        txtEspecie = new JTextField(20);
-        txtEspecie.setEditable(false);
+        JLabel labelEspecie = new JLabel("Espécie:");
+        labelEspecie.setForeground(Color.BLACK);
+        campoEspecie = new JTextField(20);
+        campoEspecie.setEditable(false);
 
-        JLabel lblRaca = new JLabel("Raça:");
-        lblRaca.setForeground(Color.BLACK);
-        txtRaca = new JTextField(20);
-        txtRaca.setEditable(false);
+        JLabel labelRaca = new JLabel("Raça:");
+        labelRaca.setForeground(Color.BLACK);
+        campoRaca = new JTextField(20);
+        campoRaca.setEditable(false);
 
-        JLabel lblCor = new JLabel("Cor/Pelagem:");
-        lblCor.setForeground(Color.BLACK);
-        txtCor = new JTextField(20);
-        txtCor.setEditable(false);
+        JLabel labelCor = new JLabel("Cor/Pelagem:");
+        labelCor.setForeground(Color.BLACK);
+        campoCor = new JTextField(20);
+        campoCor.setEditable(false);
 
-        JLabel lblPeso = new JLabel("Peso:");
-        lblPeso.setForeground(Color.BLACK);
-        txtPeso = new JTextField(20);
-        txtPeso.setEditable(false);
+        JLabel labelPeso = new JLabel("Peso:");
+        labelPeso.setForeground(Color.BLACK);
+        campoPeso = new JTextField(20);
+        campoPeso.setEditable(false);
 
-        JLabel lblCpfTutor = new JLabel("CPF do Tutor:");
-        lblCpfTutor.setForeground(Color.BLACK);
-        txtCpfTutor = new JTextField(20);
-        txtCpfTutor.setEditable(false);
+        JLabel labelCpfTutor = new JLabel("CPF do Tutor:");
+        labelCpfTutor.setForeground(Color.BLACK);
+        campoCpfTutor = new JTextField(20);
+        campoCpfTutor.setEditable(false);
 
-        JLabel lblIdade = new JLabel("Idade:");
-        lblIdade.setForeground(Color.BLACK);
-        txtIdade = new JTextField(20);
-        txtIdade.setEditable(false);
+        JLabel labelIdade = new JLabel("Idade:");
+        labelIdade.setForeground(Color.BLACK);
+        campoIdade = new JTextField(20);
+        campoIdade.setEditable(false);
 
         // Adiciona os componentes ao layout
-        addComponent(gbc, lblIdAnimal, 0, 1);
-        addComponent(gbc, txtIdAnimal, 1, 1);
-        addComponent(gbc, lblNome, 0, 2);
-        addComponent(gbc, txtNome, 1, 2);
-        addComponent(gbc, lblEspecie, 0, 3);
-        addComponent(gbc, txtEspecie, 1, 3);
-        addComponent(gbc, lblRaca, 0, 4);
-        addComponent(gbc, txtRaca, 1, 4);
-        addComponent(gbc, lblCor, 0, 5);
-        addComponent(gbc, txtCor, 1, 5);
-        addComponent(gbc, lblPeso, 0, 6);
-        addComponent(gbc, txtPeso, 1, 6);
-        addComponent(gbc, lblCpfTutor, 0, 7);
-        addComponent(gbc, txtCpfTutor, 1, 7);
-        addComponent(gbc, lblIdade, 0, 8);
-        addComponent(gbc, txtIdade, 1, 8);
+        addComponent(gbc, labelIdAnimal, 0, 1);
+        addComponent(gbc, campoIdAnimal, 1, 1);
+        addComponent(gbc, labelNome, 0, 2);
+        addComponent(gbc, campoNome, 1, 2);
+        addComponent(gbc, labelEspecie, 0, 3);
+        addComponent(gbc, campoEspecie, 1, 3);
+        addComponent(gbc, labelRaca, 0, 4);
+        addComponent(gbc, campoRaca, 1, 4);
+        addComponent(gbc, labelCor, 0, 5);
+        addComponent(gbc, campoCor, 1, 5);
+        addComponent(gbc, labelPeso, 0, 6);
+        addComponent(gbc, campoPeso, 1, 6);
+        addComponent(gbc, labelCpfTutor, 0, 7);
+        addComponent(gbc, campoCpfTutor, 1, 7);
+        addComponent(gbc, labelIdade, 0, 8);
+        addComponent(gbc, campoIdade, 1, 8);
+        addComponent(gbc, btnVoltar, 0, 9);
+
 
         pack();
     }
@@ -137,75 +130,46 @@ public class ProntuarioAnimal extends JFrame {
     }
 
     private void preencherInformacoesAnimal() {
-        String id = txtIdAnimal.getText().trim();
-        Animal animal = animaisDb.get(id);
+        String id = campoIdAnimal.getText().trim();
 
-        if (animal != null) {
-            txtNome.setText(animal.getNome());
-            txtEspecie.setText(animal.getEspecie());
-            txtRaca.setText(animal.getRaca());
-            txtCor.setText(animal.getCor());
-            txtPeso.setText(String.valueOf(animal.getPeso()));
-            txtCpfTutor.setText(animal.getCpfTutor());
-            txtIdade.setText(String.valueOf(animal.getIdade()));
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String sql = "SELECT * FROM TBL_FICHA WHERE ID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, id);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        campoNome.setText(rs.getString("NOME"));
+                        campoEspecie.setText(rs.getString("ESPECIE"));
+                        campoRaca.setText(rs.getString("RACA"));
+                        campoCor.setText(rs.getString("COR_PELAGEM"));
+                        campoPeso.setText(rs.getString("PESO"));
+                        campoCpfTutor.setText(rs.getString("CPF_DONO"));
+                        campoIdade.setText(calculateAge(rs.getDate("DATA_NASCIMENTO")));
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Animal não encontrado.");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao buscar dados do animal.");
         }
     }
 
+    private String calculateAge(java.sql.Date birthDate) {
+        // Calcular a idade do animal a partir da data de nascimento
+        java.util.Date currentDate = new java.util.Date();
+        long ageInMillis = currentDate.getTime() - birthDate.getTime();
+        long ageInYears = ageInMillis / (1000L * 60 * 60 * 24 * 365);
+        return String.valueOf(ageInYears);
+    }
+
     public static void main(String[] args) {
-        new ProntuarioAnimal();
-    }
-}
-
-class Animal {
-    private int id;
-    private String nome;
-    private String especie;
-    private String raca;
-    private String cor;
-    private String cpfTutor;
-    private int peso;
-    private int idade;
-
-    public Animal(int id, String nome, String especie, String raca, String cor, String cpfTutor, int peso, int idade) {
-        this.id = id;
-        this.nome = nome;
-        this.especie = especie;
-        this.raca = raca;
-        this.cor = cor;
-        this.cpfTutor = cpfTutor;
-        this.peso = peso;
-        this.idade = idade;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getEspecie() {
-        return especie;
-    }
-
-    public String getRaca() {
-        return raca;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public String getCpfTutor() {
-        return cpfTutor;
-    }
-
-    public int getPeso() {
-        return peso;
-    }
-
-    public int getIdade() {
-        return idade;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ProntuarioAnimal();
+            }
+        });
     }
 }
