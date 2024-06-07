@@ -4,37 +4,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.*;
 
 public class ProntuarioAnimal extends JFrame {
 
-    // Campos de texto e outros componentes
     private JTextField campoIdAnimal, campoNome, campoEspecie, campoRaca, campoCor, campoPeso, campoCpfTutor, campoIdade;
 
-    // Configurações do banco de dados
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/db_veterinaria";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "usjt";
-
     public ProntuarioAnimal() {
-        // Configurações da janela
         setTitle("Ficha");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Inicia a janela em tela cheia
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
 
-        // Criação dos componentes
         initComponents();
-
-        // Torna a janela visível
         setVisible(true);
     }
 
     private void initComponents() {
-        // Inicializa os componentes
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -42,8 +30,8 @@ public class ProntuarioAnimal extends JFrame {
         btnVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TelaPrincipal(); // Abre a tela principal
-                dispose(); // Fecha a tela
+                dispose();
+                new TelaPrincipal().setVisible(true);
             }
         });
 
@@ -51,15 +39,15 @@ public class ProntuarioAnimal extends JFrame {
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 20, 10);
+        add(btnVoltar, gbc);
 
-        gbc.gridwidth = 1; // Reseta o gridwidth
+        gbc.gridwidth = 1;
 
-        // Informações Básicas do Animal
         JLabel labelIdAnimal = new JLabel("ID do Animal:");
         labelIdAnimal.setForeground(Color.BLACK);
         campoIdAnimal = new JTextField(20);
         campoIdAnimal.addActionListener(new ActionListener() {
-            // @Override
+            @Override
             public void actionPerformed(ActionEvent e) {
                 preencherInformacoesAnimal();
             }
@@ -100,7 +88,6 @@ public class ProntuarioAnimal extends JFrame {
         campoIdade = new JTextField(20);
         campoIdade.setEditable(false);
 
-        // Adiciona os componentes ao layout
         addComponent(gbc, labelIdAnimal, 0, 1);
         addComponent(gbc, campoIdAnimal, 1, 1);
         addComponent(gbc, labelNome, 0, 2);
@@ -117,10 +104,6 @@ public class ProntuarioAnimal extends JFrame {
         addComponent(gbc, campoCpfTutor, 1, 7);
         addComponent(gbc, labelIdade, 0, 8);
         addComponent(gbc, campoIdade, 1, 8);
-        addComponent(gbc, btnVoltar, 0, 9);
-
-
-        pack();
     }
 
     private void addComponent(GridBagConstraints gbc, Component component, int x, int y) {
@@ -132,7 +115,7 @@ public class ProntuarioAnimal extends JFrame {
     private void preencherInformacoesAnimal() {
         String id = campoIdAnimal.getText().trim();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             String sql = "SELECT * FROM TBL_FICHA WHERE ID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, id);
@@ -157,7 +140,6 @@ public class ProntuarioAnimal extends JFrame {
     }
 
     private String calculateAge(java.sql.Date birthDate) {
-        // Calcular a idade do animal a partir da data de nascimento
         java.util.Date currentDate = new java.util.Date();
         long ageInMillis = currentDate.getTime() - birthDate.getTime();
         long ageInYears = ageInMillis / (1000L * 60 * 60 * 24 * 365);

@@ -5,13 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class TelaPrincipal {
+public class TelaPrincipal extends JFrame {
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Clínica Veterinária");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+    public TelaPrincipal() {
+        setTitle("Tela Principal");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setLayout(new BorderLayout());
+
+        // Centraliza a janela na tela
+        setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -23,40 +26,54 @@ public class TelaPrincipal {
         titleLabel.setFont(new Font("Raleway", Font.BOLD, 15));
         topPanel.add(titleLabel);
 
-        JButton botaoFicha = new JButton("Consultar Ficha");
-        JButton botaoExame = new JButton("Consultar Exames");
-
-        botaoFicha.setAlignmentX(Component.CENTER_ALIGNMENT);
-        botaoExame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Criação dos botões com tamanho padronizado
+        JButton botaoExame = createStandardButton("Consultar Exames");
+        JButton btnAbrirProntuario = createStandardButton("Abrir Prontuário");
 
         mainPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-        mainPanel.add(botaoFicha);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         mainPanel.add(botaoExame);
 
-        frame.add(topPanel, BorderLayout.NORTH);
-        frame.add(mainPanel, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
+        add(mainPanel, BorderLayout.CENTER);
 
-        JButton btnAbrirProntuario = new JButton("Abrir Prontuário");
         btnAbrirProntuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Fecha a janela atual
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-                frame.dispose();
-
-                // Abre a janela do Prontuário Animal
-                //JOptionPane.showMessageDialog(frame, " não implementado.");
+                dispose();
+                new ProntuarioAnimal().setVisible(true);
             }
         });
 
         botaoExame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Consultar Exames não implementado.");
+                dispose();
+                // new ConsultaExamesFrame().setVisible(true);
+                // JOptionPane.showMessageDialog(null, "Consultar Exames não implementado.");
             }
         });
 
-        frame.setVisible(true);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        mainPanel.add(btnAbrirProntuario);
+    }
+
+    // Método para criar botões padronizados
+    private JButton createStandardButton(String text) {
+        JButton button = new JButton(text);
+        Dimension buttonSize = new Dimension(200, 50); // Tamanho padrão para todos os botões
+        button.setPreferredSize(buttonSize);
+        button.setMinimumSize(buttonSize);
+        button.setMaximumSize(buttonSize);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return button;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new TelaPrincipal().setVisible(true);
+            }
+        });
     }
 }
