@@ -1,7 +1,7 @@
-package Trabalho;
+package main.java;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class cadastroPet {
 

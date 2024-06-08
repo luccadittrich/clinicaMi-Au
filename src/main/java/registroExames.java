@@ -1,7 +1,9 @@
-package Trabalho;
+package main.java;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class registroExames {
     public static void main(String[] args) {
@@ -21,6 +23,14 @@ public class registroExames {
         panel.add(topPanel, BorderLayout.NORTH);
 
         JButton backButton = new JButton("Voltar à página principal");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Utilizando a referência do frame
+                new TelaPrincipal().setVisible(true);
+            }
+        });
+
         topPanel.add(backButton, BorderLayout.WEST);
 
         JPanel titlePanel = new JPanel();
@@ -44,7 +54,7 @@ public class registroExames {
 
         inputPanel.add(new JLabel("Período"));
         JComboBox<String> periodoCombo = new JComboBox<>(
-                new String[] { "Todos os períodos", "Últimos 7 dias", "Último mês", "Último ano" });
+                new String[]{"Todos os períodos", "Últimos 7 dias", "Último mês", "Último ano"});
         inputPanel.add(periodoCombo);
 
         JButton searchButton = new JButton("Pesquisar");
@@ -81,4 +91,5 @@ public class registroExames {
 
         return fichaPanel;
     }
+
 }
