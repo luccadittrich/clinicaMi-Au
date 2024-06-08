@@ -11,6 +11,8 @@ import javax.swing.*;
 public class ProntuarioAnimal extends JFrame {
 
     private JTextField campoIdAnimal, campoNome, campoEspecie, campoRaca, campoCor, campoPeso, campoCpfTutor, campoIdade;
+    private JButton btnSalvar;
+    private boolean isEditing = false;
 
     public ProntuarioAnimal() {
         setTitle("Ficha");
@@ -30,8 +32,32 @@ public class ProntuarioAnimal extends JFrame {
         btnVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
                 new TelaPrincipal().setVisible(true);
+                dispose();
+            }
+        });
+
+        JButton btnNovoAnimal = new JButton("Novo");
+        btnNovoAnimal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                criarNovoAnimal();
+            }
+        });
+
+        JButton botaoEditar = new JButton("Editar");
+        botaoEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                habilitarEdicao();
+            }
+        });
+
+        btnSalvar = new JButton("Salvar");
+        btnSalvar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                salvarAnimal();
             }
         });
 
@@ -40,6 +66,10 @@ public class ProntuarioAnimal extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 20, 10);
         add(btnVoltar, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridwidth = 1;
+        add(btnNovoAnimal, gbc);
 
         gbc.gridwidth = 1;
 
@@ -90,6 +120,10 @@ public class ProntuarioAnimal extends JFrame {
 
         addComponent(gbc, labelIdAnimal, 0, 1);
         addComponent(gbc, campoIdAnimal, 1, 1);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        add(botaoEditar, gbc); // Botão Editar ao lado do ID do Animal
+
         addComponent(gbc, labelNome, 0, 2);
         addComponent(gbc, campoNome, 1, 2);
         addComponent(gbc, labelEspecie, 0, 3);
@@ -104,6 +138,10 @@ public class ProntuarioAnimal extends JFrame {
         addComponent(gbc, campoCpfTutor, 1, 7);
         addComponent(gbc, labelIdade, 0, 8);
         addComponent(gbc, campoIdade, 1, 8);
+
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+        add(btnSalvar, gbc); // Botão Salvar embaixo de tudo
     }
 
     private void addComponent(GridBagConstraints gbc, Component component, int x, int y) {
@@ -144,6 +182,95 @@ public class ProntuarioAnimal extends JFrame {
         long ageInMillis = currentDate.getTime() - birthDate.getTime();
         long ageInYears = ageInMillis / (1000L * 60 * 60 * 24 * 365);
         return String.valueOf(ageInYears);
+    }
+
+    private void criarNovoAnimal() {
+        campoIdAnimal.setText("");
+        campoNome.setText("");
+        campoEspecie.setText("");
+        campoRaca.setText("");
+        campoCor.setText("");
+        campoPeso.setText("");
+        campoCpfTutor.setText("");
+        campoIdade.setText("");
+
+        campoNome.setEditable(true);
+        campoEspecie.setEditable(true);
+        campoRaca.setEditable(true);
+        campoCor.setEditable(true);
+        campoPeso.setEditable(true);
+        campoCpfTutor.setEditable(true);
+        campoIdade.setEditable(true);
+
+        isEditing = false;
+    }
+
+    private void habilitarEdicao() {
+        campoNome.setEditable(true);
+        campoEspecie.setEditable(true);
+        campoRaca.setEditable(true);
+        campoCor.setEditable(true);
+        campoPeso.setEditable(true);
+        campoCpfTutor.setEditable(true);
+        campoIdade.setEditable(true);
+
+        isEditing = true;
+    }
+
+    private void salvarAnimal() {
+        String id = campoIdAnimal.getText().trim();
+        String nome = campoNome.getText().trim();
+        String especie = campoEspecie.getText().trim();
+        String raca = campoRaca.getText().trim();
+        String cor = campoCor.getText().trim();
+        String peso = campoPeso.getText().trim();
+        String cpfTutor = campoCpfTutor.getText().trim();
+        int idade = Integer.parseInt(campoIdade.getText().trim());
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            if (isEditing) {
+                String sql = "UPDATE TBL_FICHA SET NOME = ?, ESPECIE = ?, RACA = ?, COR_PELAGEM = ?, PESO = ?, CPF_DONO = ?, DATA_NASCIMENTO = ? WHERE ID = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, nome);
+                    stmt.setString(2, especie);
+                    stmt.setString(3, raca);
+                    stmt.setString(4, cor);
+                    stmt.setString(5, peso);
+                    stmt.setString(6, cpfTutor);
+                    java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
+                    stmt.setDate(7, dataNascimento);
+                    stmt.setString(8, id);
+                    stmt.executeUpdate();
+                    JOptionPane.showMessageDialog(this, "Animal atualizado com sucesso!");
+                }
+            } else {
+                String sql = "INSERT INTO TBL_FICHA (ID, NOME, ESPECIE, RACA, COR_PELAGEM, PESO, CPF_DONO, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, id);
+                    stmt.setString(2, nome);
+                    stmt.setString(3, especie);
+                    stmt.setString(4, raca);
+                    stmt.setString(5, cor);
+                    stmt.setString(6, peso);
+                    stmt.setString(7, cpfTutor);
+                    java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
+                    stmt.setDate(8, dataNascimento);
+                    stmt.executeUpdate();
+                    JOptionPane.showMessageDialog(this, "Animal cadastrado com sucesso!");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao salvar os dados do animal.");
+        }
+
+        campoNome.setEditable(false);
+        campoEspecie.setEditable(false);
+        campoRaca.setEditable(false);
+        campoCor.setEditable(false);
+        campoPeso.setEditable(false);
+        campoCpfTutor.setEditable(false);
+        campoIdade.setEditable(false);
     }
 
     public static void main(String[] args) {

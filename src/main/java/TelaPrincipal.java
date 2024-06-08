@@ -39,17 +39,17 @@ public class TelaPrincipal extends JFrame {
         btnAbrirProntuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
                 new ProntuarioAnimal().setVisible(true);
+                dispose();
             }
         });
 
         botaoExame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
                 // new ConsultaExamesFrame().setVisible(true);
                 // JOptionPane.showMessageDialog(null, "Consultar Exames não implementado.");
+                dispose();
             }
         });
 
