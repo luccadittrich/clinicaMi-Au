@@ -48,7 +48,6 @@ public class TelaPrincipal extends JFrame {
         add(mainPanel, BorderLayout.CENTER);
 
         btnAbrirProntuario.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new ProntuarioAnimal().setVisible(true);
                 dispose();
@@ -56,23 +55,19 @@ public class TelaPrincipal extends JFrame {
         });
 
         botaoExame.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new registroExames().setVisible(true);
-                // JOptionPane.showMessageDialog(null, "Consultar Exames não implementado.");
                 dispose();
             }
         });
 
         botaoCadastrarTutor.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new cadastroTutor().setVisible(true);
                 dispose();
             }
         });
         botaoCadastrarPet.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new cadastroPet().setVisible(true);
                 dispose();
@@ -93,7 +88,6 @@ public class TelaPrincipal extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new TelaPrincipal().setVisible(true);
             }

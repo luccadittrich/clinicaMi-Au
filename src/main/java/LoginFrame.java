@@ -1,7 +1,7 @@
 package main.java;
-import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
+import javax.swing.*;
 
 public class LoginFrame extends JFrame {
     private JTextField cpfField;
@@ -18,7 +18,7 @@ public class LoginFrame extends JFrame {
 
         cpfField = new JTextField(11);
         passwordField = new JPasswordField(20);
-        
+
         JButton loginButton = new JButton("Login");
 
         loginButton.addActionListener(new ActionListener() {
@@ -40,7 +40,7 @@ public class LoginFrame extends JFrame {
         String cpf = cpfField.getText();
         String password = new String(passwordField.getPassword());
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinica_miau", "root", "123456")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_veterinaria", "lucca", "Mbt2019@")) {
             String sql = "SELECT * FROM TBL_RECEPCIONISTA WHERE cpf = ? AND senha = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, cpf);
@@ -50,7 +50,7 @@ public class LoginFrame extends JFrame {
 
             if (resultSet.next()) {
                 // Login bem-sucedido
-                new ConsultaExamesFrame(cpf).setVisible(true);
+                new TelaPrincipal().setVisible(true);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "CPF ou senha inválidos.");

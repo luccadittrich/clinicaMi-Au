@@ -30,7 +30,6 @@ public class ProntuarioAnimal extends JFrame {
 
         JButton btnVoltar = new JButton("Voltar à Tela Principal");
         btnVoltar.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new TelaPrincipal().setVisible(true);
                 dispose();
@@ -39,7 +38,6 @@ public class ProntuarioAnimal extends JFrame {
 
         JButton btnNovoAnimal = new JButton("Novo");
         btnNovoAnimal.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 criarNovoAnimal();
             }
@@ -47,7 +45,6 @@ public class ProntuarioAnimal extends JFrame {
 
         JButton botaoEditar = new JButton("Editar");
         botaoEditar.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 habilitarEdicao();
             }
@@ -55,7 +52,6 @@ public class ProntuarioAnimal extends JFrame {
 
         btnSalvar = new JButton("Salvar");
         btnSalvar.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 salvarAnimal();
             }
@@ -77,7 +73,6 @@ public class ProntuarioAnimal extends JFrame {
         labelIdAnimal.setForeground(Color.BLACK);
         campoIdAnimal = new JTextField(20);
         campoIdAnimal.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 preencherInformacoesAnimal();
             }
@@ -275,7 +270,6 @@ public class ProntuarioAnimal extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new ProntuarioAnimal();
             }

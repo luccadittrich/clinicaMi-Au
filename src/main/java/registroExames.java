@@ -1,118 +1,105 @@
 package main.java;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class registroExames extends JFrame {
-
-    private JTextField cpfField;
-    private JComboBox<String> periodoCombo;
+    private JTextField CPFField, campoNome, campoID, campoExame ;
+    private JTextArea resultadosArea;
 
     public registroExames() {
-        // Configura a frame principal
-        setTitle("Resultados de Exames");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(700, 500);
+        // Configurações da janela
+        setTitle("Tela de Exames");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-        // Cria o painel principal
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        add(panel);
-
-        // Painel superior com o botão de voltar, título e botão de sair
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BorderLayout());
-        panel.add(topPanel, BorderLayout.NORTH);
-
-        JButton backButton = new JButton("Voltar à página principal");
-        topPanel.add(backButton, BorderLayout.WEST);
-
-        JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel titleLabel = new JLabel("Resultados de Exames", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        titlePanel.add(titleLabel);
-        topPanel.add(titlePanel, BorderLayout.CENTER);
-
-        JButton exitButton = new JButton("Sair");
-        topPanel.add(exitButton, BorderLayout.EAST);
+        // Painel principal
+        JPanel painel = new JPanel();
+        painel.setLayout(new BorderLayout());
 
         // Painel de entrada de dados
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panel.add(inputPanel, BorderLayout.CENTER);
+        JPanel painelDados = new JPanel();
+        painelDados.setLayout(new GridLayout(2, 2));
 
-        inputPanel.add(new JLabel("CPF"));
-        cpfField = new JTextField(20);
-        inputPanel.add(cpfField);
+        painelDados.add(new JLabel("CPF:"));
+        CPFField = new JTextField();
+        painelDados.add(CPFField);
 
-        inputPanel.add(new JLabel("Período"));
-        periodoCombo = new JComboBox<>(
-                new String[] { "Todos os períodos", "Últimos 7 dias", "Último mês", "Último ano" });
-        inputPanel.add(periodoCombo);
+        painel.add(painelDados, BorderLayout.NORTH);
 
-        JButton searchButton = new JButton("Pesquisar");
-        inputPanel.add(searchButton);
+        // Área de resultados
+        resultadosArea = new JTextArea();
+        resultadosArea.setEditable(false);
+        painel.add(new JScrollPane(resultadosArea), BorderLayout.CENTER);
 
-        // Painel inferior com a lista de fichas
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
-        panel.add(bottomPanel, BorderLayout.SOUTH);
 
-        bottomPanel.add(createFichaPanel("19403629"));
-        bottomPanel.add(createFichaPanel("31329481"));
-        bottomPanel.add(createFichaPanel("13194810"));
-        bottomPanel.add(createFichaPanel("24615875"));
-
-        // Action listener para o botão voltar
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new TelaPrincipal().setVisible(true);
-                dispose();
+        // Botão de submissão
+        JButton botaoSubmeter = new JButton("Submeter");
+        botaoSubmeter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                String cpf = CPFField.getText();
+                try (Connection conn = DatabaseConnection.getConnection()) {
+                    String sql = "SELECT \r\n" + //
+                                                "    TBL_FICHA.ID,\r\n" + //
+                                                "    TBL_FICHA.NOME,\r\n" + //
+                                                "    TBL_EXAMES.EXAME\r\n" + //
+                                                "FROM \r\n" + //
+                                                "    TBL_FICHA\r\n" + //
+                                                "INNER JOIN \r\n" + //
+                                                "    TBL_EXAMES ON TBL_FICHA.ID = TBL_EXAMES.ANIMAL_ID\r\n" + //
+                                                "WHERE \r\n" + //
+                                                "    TBL_FICHA.CPF_DONO = ?";
+                    try (PreparedStatement statement = conn.prepareStatement(sql)) {
+                        statement.setString(1, cpf);
+                        try (ResultSet resultSet = statement.executeQuery()) {
+                            if (resultSet.next()) {
+                                // Login bem-sucedido
+                                // new TelaPrincipal().setVisible(true);
+                                // dispose();
+                                String resultMessage = "ID: " + resultSet.getString("ID") + "\n" +
+                                                       "Nome: " + resultSet.getString("NOME") + "\n" +
+                                                       "Exame: " + resultSet.getString("EXAME");
+                                JOptionPane.showMessageDialog(registroExames.this, resultMessage, "Resultados", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(registroExames.this, "CPF não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
-        // Action listener para o botão sair
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        painel.add(botaoSubmeter, BorderLayout.SOUTH);
 
-        // Exibindo a janela
+        // Adiciona o painel à janela
+        add(painel);
+
+        // Torna a janela visível
         setVisible(true);
     }
 
-    private JPanel createFichaPanel(String fichaNumber) {
-        JPanel fichaPanel = new JPanel();
-        fichaPanel.setLayout(new BorderLayout());
-        fichaPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        fichaPanel.setPreferredSize(new Dimension(600, 90));
-
-        JButton expandButton = new JButton("▼");
-        fichaPanel.add(expandButton, BorderLayout.WEST);
-
-        JLabel fichaLabel = new JLabel("Ficha " + fichaNumber);
-        fichaPanel.add(fichaLabel, BorderLayout.CENTER);
-
-        JButton examsButton = new JButton("Todos os exames");
-        fichaPanel.add(examsButton, BorderLayout.EAST);
-
-        return fichaPanel;
-    }
+    // private void submeterDados() {
+    //     String CPF = CPFField.getText();
+    //     if (CPF.isEmpty()) {
+    //         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+    //     } else {
+    //         CPFField.setText("");
+    //     }
+    // }
 
     public static void main(String[] args) {
-        // Executa o registroExames
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new registroExames().setVisible(true);
             }
         });
     }
 }
-

@@ -130,7 +130,6 @@ public class cadastroTutor extends JFrame {
 
         // Action listener para o botão cadastrar
         cadastrarButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 String nome = nomeField.getText();
                 String sobrenome = sobrenomeField.getText();
@@ -163,7 +162,6 @@ public class cadastroTutor extends JFrame {
 
         // Action listener para o botão voltar
         btnVoltar.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new TelaPrincipal().setVisible(true);
                 dispose();
@@ -174,7 +172,6 @@ public class cadastroTutor extends JFrame {
     public static void main(String[] args) {
         // Executa o cadastroTutor
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new cadastroTutor().setVisible(true);
             }

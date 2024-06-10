@@ -108,7 +108,6 @@ public class cadastroPet extends JFrame {
 
         JButton btnVoltar = new JButton("Voltar à Tela Principal");
         btnVoltar.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 new TelaPrincipal().setVisible(true);
                 dispose();
@@ -128,7 +127,7 @@ public class cadastroPet extends JFrame {
 
         // Evento de clique no botão Cadastrar
         btnCadastrar.addActionListener(new ActionListener() {
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
                 String nomeAnimal = campoNomeAnimal.getText().trim();
                 String cpfTutor = campoCpfTutor.getText().trim();
