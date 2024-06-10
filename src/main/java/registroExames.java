@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class registroExames extends JFrame {
-    private JTextField CPFField, campoNome, campoID, campoExame ;
+    private JTextField CPFField;
     private JTextArea resultadosArea;
 
     public registroExames() {
@@ -38,6 +38,9 @@ public class registroExames extends JFrame {
         resultadosArea.setEditable(false);
         painel.add(new JScrollPane(resultadosArea), BorderLayout.CENTER);
 
+        // Painel de botões
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.setLayout(new GridLayout(2, 1));
 
         // Botão de submissão
         JButton botaoSubmeter = new JButton("Submeter");
@@ -59,9 +62,6 @@ public class registroExames extends JFrame {
                         statement.setString(1, cpf);
                         try (ResultSet resultSet = statement.executeQuery()) {
                             if (resultSet.next()) {
-                                // Login bem-sucedido
-                                // new TelaPrincipal().setVisible(true);
-                                // dispose();
                                 String resultMessage = "ID: " + resultSet.getString("ID") + "\n" +
                                                        "Nome: " + resultSet.getString("NOME") + "\n" +
                                                        "Exame: " + resultSet.getString("EXAME");
@@ -77,7 +77,19 @@ public class registroExames extends JFrame {
             }
         });
 
-        painel.add(botaoSubmeter, BorderLayout.SOUTH);
+        // Botão Voltar
+        JButton botaoVoltar = new JButton("Voltar");
+        botaoVoltar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                new TelaPrincipal().setVisible(true);
+                dispose();
+            }
+        });
+
+        painelBotoes.add(botaoSubmeter);
+        painelBotoes.add(botaoVoltar);
+
+        painel.add(painelBotoes, BorderLayout.SOUTH);
 
         // Adiciona o painel à janela
         add(painel);
@@ -85,15 +97,6 @@ public class registroExames extends JFrame {
         // Torna a janela visível
         setVisible(true);
     }
-
-    // private void submeterDados() {
-    //     String CPF = CPFField.getText();
-    //     if (CPF.isEmpty()) {
-    //         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
-    //     } else {
-    //         CPFField.setText("");
-    //     }
-    // }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

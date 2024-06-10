@@ -23,13 +23,13 @@ public class cadastroPet extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
 
-        // Cria o painel principal
+        // Criar o painel principal
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(6, 6, 6, 6);
 
-        // Adiciona o título
+        // Adicionar o título
         JLabel titleLabel = new JLabel("Cadastro do Pet");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -37,10 +37,10 @@ public class cadastroPet extends JFrame {
 
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Adiciona os componentes ao painel
+        // Adicionar os componentes ao painel
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Linha Animal
+        //  Animal
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(new JLabel("Nome do Animal"), gbc);
@@ -48,7 +48,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoNomeAnimal, gbc);
 
-        // Linha Proprietario
+        //  Proprietario
         gbc.gridx = 0;
         gbc.gridy = 3;
         panel.add(new JLabel("CPF Tutor"), gbc);
@@ -56,7 +56,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoCpfTutor, gbc);
 
-        // Linha especie
+        //  especie
         gbc.gridx = 0;
         gbc.gridy = 5;
         panel.add(new JLabel("Espécie"), gbc);
@@ -69,7 +69,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 3;
         panel.add(campoRaca, gbc);
 
-        // Linha pelagem
+        //  pelagem
         gbc.gridx = 0;
         gbc.gridy = 7;
         panel.add(new JLabel("Cor/Pelagem"), gbc);
@@ -77,7 +77,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoCorPelagem, gbc);
 
-        // Linha peso
+        //  peso
         gbc.gridx = 0;
         gbc.gridy = 9;
         panel.add(new JLabel("Peso (Kg)"), gbc);
@@ -85,7 +85,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoPeso, gbc);
 
-        // Linha sexo
+        //  sexo
         gbc.gridx = 0;
         gbc.gridy = 11;
         panel.add(new JLabel("Sexo"), gbc);
@@ -93,7 +93,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoSexo, gbc);
 
-        // Linha idade
+        //  idade
         gbc.gridx = 0;
         gbc.gridy = 13;
         panel.add(new JLabel("Idade"), gbc);
@@ -101,7 +101,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoIdade, gbc);
 
-        // Linha 11 - Botões
+        //  Botões
         JPanel buttonPanel = new JPanel();
         JButton btnCadastrar = new JButton("CADASTRAR");
         buttonPanel.add(btnCadastrar);

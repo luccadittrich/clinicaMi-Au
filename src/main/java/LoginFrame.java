@@ -40,7 +40,7 @@ public class LoginFrame extends JFrame {
         String cpf = cpfField.getText();
         String password = new String(passwordField.getPassword());
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_veterinaria", "lucca", "Mbt2019@")) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             String sql = "SELECT * FROM TBL_RECEPCIONISTA WHERE cpf = ? AND senha = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, cpf);
@@ -49,7 +49,6 @@ public class LoginFrame extends JFrame {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                // Login bem-sucedido
                 new TelaPrincipal().setVisible(true);
                 dispose();
             } else {

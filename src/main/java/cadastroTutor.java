@@ -143,7 +143,7 @@ public class cadastroTutor extends JFrame {
 
                 // Insere os dados no banco de dados
                 try (Connection conn = DatabaseConnection.getConnection()) {
-                    String sql = "INSERT INTO TBL_PESSOAS (CPF, NOME, EMAIL, DATA_NASCIMENTO, TELEFONE, ENDERECO) VALUES (?, ?, ?, ?, ?, ?)";
+                    String sql = "INSERT INTO TBL_PESSOAS (CPF, NOME, EMAIL, DATA_NASCIMENTO, TELEFONE, ENDERECO, SEXO) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, cpf);
                     pstmt.setString(2, nome + " " + sobrenome);
@@ -151,6 +151,7 @@ public class cadastroTutor extends JFrame {
                     pstmt.setString(4, dataNascimento);
                     pstmt.setString(5, telefone);
                     pstmt.setString(6, endereco + ", " + cep);
+                    pstmt.setString(7, sexo);
                     pstmt.executeUpdate();
                     JOptionPane.showMessageDialog(panel, "Cadastro realizado com sucesso!");
                 } catch (SQLException ex) {
