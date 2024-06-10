@@ -5,17 +5,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class registroExames {
-    public static void main(String[] args) {
-        // frame principal
-        JFrame frame = new JFrame("Resultados de Exames");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 500);
+public class registroExames extends JFrame {
 
-        // Painel principal
+    private JTextField cpfField;
+    private JComboBox<String> periodoCombo;
+
+    public registroExames() {
+        // Configura a frame principal
+        setTitle("Resultados de Exames");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(700, 500);
+
+        // Cria o painel principal
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        frame.add(panel);
+        add(panel);
 
         // Painel superior com o botão de voltar, título e botão de sair
         JPanel topPanel = new JPanel();
@@ -23,14 +27,6 @@ public class registroExames {
         panel.add(topPanel, BorderLayout.NORTH);
 
         JButton backButton = new JButton("Voltar à página principal");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Utilizando a referência do frame
-                new TelaPrincipal().setVisible(true);
-            }
-        });
-
         topPanel.add(backButton, BorderLayout.WEST);
 
         JPanel titlePanel = new JPanel();
@@ -49,12 +45,12 @@ public class registroExames {
         panel.add(inputPanel, BorderLayout.CENTER);
 
         inputPanel.add(new JLabel("CPF"));
-        JTextField cpfField = new JTextField(10);
+        cpfField = new JTextField(20);
         inputPanel.add(cpfField);
 
         inputPanel.add(new JLabel("Período"));
-        JComboBox<String> periodoCombo = new JComboBox<>(
-                new String[]{"Todos os períodos", "Últimos 7 dias", "Último mês", "Último ano"});
+        periodoCombo = new JComboBox<>(
+                new String[] { "Todos os períodos", "Últimos 7 dias", "Último mês", "Último ano" });
         inputPanel.add(periodoCombo);
 
         JButton searchButton = new JButton("Pesquisar");
@@ -70,11 +66,28 @@ public class registroExames {
         bottomPanel.add(createFichaPanel("13194810"));
         bottomPanel.add(createFichaPanel("24615875"));
 
+        // Action listener para o botão voltar
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new TelaPrincipal().setVisible(true);
+                dispose();
+            }
+        });
+
+        // Action listener para o botão sair
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
         // Exibindo a janela
-        frame.setVisible(true);
+        setVisible(true);
     }
 
-    private static JPanel createFichaPanel(String fichaNumber) {
+    private JPanel createFichaPanel(String fichaNumber) {
         JPanel fichaPanel = new JPanel();
         fichaPanel.setLayout(new BorderLayout());
         fichaPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -92,4 +105,14 @@ public class registroExames {
         return fichaPanel;
     }
 
+    public static void main(String[] args) {
+        // Executa o registroExames
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new registroExames().setVisible(true);
+            }
+        });
+    }
 }
+

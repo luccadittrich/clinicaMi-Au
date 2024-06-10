@@ -10,7 +10,7 @@ public class TelaPrincipal extends JFrame {
     public TelaPrincipal() {
         setTitle("Tela Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 500);
         setLayout(new BorderLayout());
 
         // Centraliza a janela na tela
@@ -29,9 +29,20 @@ public class TelaPrincipal extends JFrame {
         // Criação dos botões com tamanho padronizado
         JButton botaoExame = createStandardButton("Consultar Exames");
         JButton btnAbrirProntuario = createStandardButton("Abrir Prontuário");
+        JButton botaoCadastrarTutor = createStandardButton("Cadastrar Tutor");
+        JButton botaoCadastrarPet = createStandardButton("Cadastrar Pet");
 
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        mainPanel.add(Box.createVerticalGlue()); // Adiciona espaço no topo
+
         mainPanel.add(botaoExame);
+        mainPanel.add(Box.createVerticalStrut(10)); // Adiciona espaço vertical entre os botões
+        mainPanel.add(btnAbrirProntuario);
+        mainPanel.add(Box.createVerticalStrut(10)); // Adiciona espaço vertical entre os botões
+        mainPanel.add(botaoCadastrarTutor);
+        mainPanel.add(Box.createVerticalStrut(10)); // Adiciona espaço vertical entre os botões
+        mainPanel.add(botaoCadastrarPet);
+
+        mainPanel.add(Box.createVerticalGlue()); // Adiciona espaço na parte inferior
 
         add(topPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
@@ -39,22 +50,34 @@ public class TelaPrincipal extends JFrame {
         btnAbrirProntuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new ProntuarioAnimal().setVisible(true);
                 dispose();
-                //new ProntuarioAnimal().setVisible(true); //deixei comentado porque ainda nao tem uma classe prontuario animal nessa branch
             }
         });
 
         botaoExame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new registroExames().setVisible(true);
+                // JOptionPane.showMessageDialog(null, "Consultar Exames não implementado.");
                 dispose();
-                // new ConsultaExamesFrame().setVisible(true);
-                JOptionPane.showMessageDialog(null, "Consultar Exames não implementado.");
             }
         });
 
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        mainPanel.add(btnAbrirProntuario);
+        botaoCadastrarTutor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new cadastroTutor().setVisible(true);
+                dispose();
+            }
+        });
+        botaoCadastrarPet.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new cadastroPet().setVisible(true);
+                dispose();
+            }
+        });
     }
 
     // Método para criar botões padronizados
