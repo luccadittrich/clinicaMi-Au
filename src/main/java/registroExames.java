@@ -33,7 +33,7 @@ public class registroExames extends JFrame {
 
         painel.add(painelDados, BorderLayout.NORTH);
 
-        // Área de resultados
+        // Resultados
         resultadosArea = new JTextArea();
         resultadosArea.setEditable(false);
         painel.add(new JScrollPane(resultadosArea), BorderLayout.CENTER);
