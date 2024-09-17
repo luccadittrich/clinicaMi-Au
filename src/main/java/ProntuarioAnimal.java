@@ -103,7 +103,7 @@ public class ProntuarioAnimal extends JFrame {
         campoPeso = new JTextField(20);
         campoPeso.setEditable(false);
 
-        JLabel labelCpfTutor = new JLabel("CPF do Tutor:");
+        JLabel labelCpfTutor = new JLabel("CPF:");
         labelCpfTutor.setForeground(Color.BLACK);
         campoCpfTutor = new JTextField(20);
         campoCpfTutor.setEditable(false);
