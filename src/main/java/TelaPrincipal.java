@@ -29,8 +29,8 @@ public class TelaPrincipal extends JFrame {
         // Criação dos botões com tamanho padronizado
         JButton botaoExame = createStandardButton("Consultar Exames");
         JButton btnAbrirProntuario = createStandardButton("Abrir Prontuário");
-        JButton botaoCadastrarTutor = createStandardButton("Cadastrar Tutor");
-        JButton botaoCadastrarPet = createStandardButton("Cadastrar Pet");
+        JButton botaoCadastrarTutor = createStandardButton("Acompanhante");
+        JButton botaoCadastrarPet = createStandardButton("Paciente");
 
         mainPanel.add(Box.createVerticalGlue()); // Adiciona espaço no topo
 

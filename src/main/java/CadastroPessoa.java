@@ -7,19 +7,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.*;
 
-public class cadastroPet extends JFrame {
+public class CadastroPessoa extends JFrame {
 
-    private JTextField campoNomeAnimal;
-    private JTextField campoCpfTutor;
-    private JTextField campoEspecie;
+    private JTextField campoNomePessoa;
+    private JTextField campoCpf;
     private JTextField campoRaca;
-    private JTextField campoCorPelagem;
+    private JTextField campoCorPele;
     private JTextField campoPeso;
     private JTextField campoSexo;
     private JTextField campoIdade;
 
-    public cadastroPet() {
-        setTitle("Cadastro de Animais");
+    public CadastroPessoa() {
+        setTitle("Cadastro de Pessoa");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
 
@@ -30,7 +29,7 @@ public class cadastroPet extends JFrame {
         gbc.insets = new Insets(6, 6, 6, 6);
 
         // Adicionar o título
-        JLabel titleLabel = new JLabel("Cadastro do Pet");
+        JLabel titleLabel = new JLabel("Cadastro de Pessoa");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titleLabel);
@@ -40,44 +39,39 @@ public class cadastroPet extends JFrame {
         // Adicionar os componentes ao painel
         gbc.anchor = GridBagConstraints.WEST;
 
-        //  Animal
+        // Nome
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(new JLabel("Nome"), gbc);
-        campoNomeAnimal = new JTextField(10);
+        panel.add(new JLabel("Nome Completo"), gbc);
+        campoNomePessoa = new JTextField(10);
         gbc.gridx = 1;
-        panel.add(campoNomeAnimal, gbc);
+        panel.add(campoNomePessoa, gbc);
 
-        //  Proprietario
+        // CPF
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(new JLabel("CPF Tutor"), gbc);
-        campoCpfTutor = new JTextField(10);
+        panel.add(new JLabel("CPF"), gbc);
+        campoCpf = new JTextField(10);
         gbc.gridx = 1;
-        panel.add(campoCpfTutor, gbc);
+        panel.add(campoCpf, gbc);
 
-        //  especie
+        // nacionalidade
         gbc.gridx = 0;
         gbc.gridy = 5;
-        panel.add(new JLabel("E-mail"), gbc);
-        campoEspecie = new JTextField(30);
-        gbc.gridx = 1;
-        panel.add(campoEspecie, gbc);
-        gbc.gridx = 2;
         panel.add(new JLabel("Nacionalidade"), gbc);
         campoRaca = new JTextField(10);
-        gbc.gridx = 3;
+        gbc.gridx = 1;
         panel.add(campoRaca, gbc);
 
-        //  pelagem
+        // idade
         gbc.gridx = 0;
         gbc.gridy = 7;
-        panel.add(new JLabel("Estado civil"), gbc);
-        campoCorPelagem = new JTextField(10);
+        panel.add(new JLabel("Idade"), gbc);
+        campoCorPele = new JTextField(10);
         gbc.gridx = 1;
-        panel.add(campoCorPelagem, gbc);
+        panel.add(campoCorPele, gbc);
 
-        //  peso
+        // Peso
         gbc.gridx = 0;
         gbc.gridy = 9;
         panel.add(new JLabel("Peso (Kg)"), gbc);
@@ -85,7 +79,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoPeso, gbc);
 
-        //  sexo
+        // Sexo
         gbc.gridx = 0;
         gbc.gridy = 11;
         panel.add(new JLabel("Sexo"), gbc);
@@ -93,7 +87,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoSexo, gbc);
 
-        //  idade
+        // Idade
         gbc.gridx = 0;
         gbc.gridy = 13;
         panel.add(new JLabel("Idade"), gbc);
@@ -101,7 +95,7 @@ public class cadastroPet extends JFrame {
         gbc.gridx = 1;
         panel.add(campoIdade, gbc);
 
-        //  Botões
+        // Botões
         JPanel buttonPanel = new JPanel();
         JButton btnCadastrar = new JButton("CADASTRAR");
         buttonPanel.add(btnCadastrar);
@@ -129,47 +123,46 @@ public class cadastroPet extends JFrame {
         btnCadastrar.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                String nomeAnimal = campoNomeAnimal.getText().trim();
-                String cpfTutor = campoCpfTutor.getText().trim();
-                String especie = (String) campoEspecie.getText().trim();
+                String nomePessoa = campoNomePessoa.getText().trim();
+                String cpf = campoCpf.getText().trim();
                 String raca = campoRaca.getText().trim();
-                String corPelagem = campoCorPelagem.getText().trim();
+                String corPele = campoCorPele.getText().trim();
                 String peso = campoPeso.getText().trim();
                 char sexo = campoSexo.getText().trim().charAt(0);
                 int idade = Integer.parseInt(campoIdade.getText().trim());
 
-                salvarNovoAnimal(nomeAnimal, cpfTutor, especie, raca, corPelagem, peso, sexo, idade);
+                salvarNovaPessoa(nomePessoa, cpf, raca, corPele, peso, sexo, idade);
             }
         });
     }
 
-    private void salvarNovoAnimal(String nome, String cpfTutor, String especie, String raca, String corPelagem, String peso, char  sexo, int idade) {
+    private void salvarNovaPessoa(String nome, String cpf, String raca, String corPele, String peso, char sexo, int idade) {
         try (Connection conn = DatabaseConnection.getConnection()) {
             String sql = "INSERT INTO TBL_FICHA (NOME, CPF_DONO, ESPECIE, RACA, COR_PELAGEM, PESO, SEXO, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, nome);
-                stmt.setString(2, cpfTutor);
-                stmt.setString(3, especie);
+                stmt.setString(2, cpf);
+                stmt.setString(3, "Humano"); // Simula a coluna "ESPECIE" para sempre ser "Humano"
                 stmt.setString(4, raca);
-                stmt.setString(5, corPelagem);
+                stmt.setString(5, corPele);
                 stmt.setString(6, peso);
                 stmt.setString(7, String.valueOf(sexo));
                 java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
                 stmt.setDate(8, dataNascimento);
                 stmt.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Animal cadastrado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Pessoa cadastrada com sucesso!");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Erro ao salvar novo animal.");
+            JOptionPane.showMessageDialog(null, "Erro ao salvar nova pessoa.");
         }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new cadastroPet().setVisible(true);
+                new CadastroPessoa().setVisible(true);
             }
         });
     }

@@ -8,14 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.*;
 
-public class ProntuarioAnimal extends JFrame {
+public class Prontuario extends JFrame {
 
-    private JTextField campoIdAnimal, campoNome, campoEspecie, campoRaca, campoCor, campoPeso, campoCpfTutor, campoIdade;
+    private JTextField campoIdPaciente, campoNomePessoa, campoSexo, campoRaca, campoCorPele, campoPeso, campoCpf, campoIdade;
     private JButton btnSalvar;
     private boolean isEditing = false;
 
-    public ProntuarioAnimal() {
-        setTitle("Ficha");
+    public Prontuario() {
+        setTitle("Prontuário do Paciente");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
@@ -36,10 +36,10 @@ public class ProntuarioAnimal extends JFrame {
             }
         });
 
-        JButton btnNovoAnimal = new JButton("Novo");
-        btnNovoAnimal.addActionListener(new ActionListener() {
+        JButton btnNovoPaciente = new JButton("Novo");
+        btnNovoPaciente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                criarNovoAnimal();
+                criarNovoPaciente();
             }
         });
 
@@ -53,7 +53,7 @@ public class ProntuarioAnimal extends JFrame {
         btnSalvar = new JButton("Salvar");
         btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                salvarAnimal();
+                salvarPaciente();
             }
         });
 
@@ -65,78 +65,81 @@ public class ProntuarioAnimal extends JFrame {
 
         gbc.gridx = 2;
         gbc.gridwidth = 1;
-        add(btnNovoAnimal, gbc);
+        add(btnNovoPaciente, gbc);
 
         gbc.gridwidth = 1;
 
-        JLabel labelIdAnimal = new JLabel("ID do Animal:");
-        labelIdAnimal.setForeground(Color.BLACK);
-        campoIdAnimal = new JTextField(20);
-        campoIdAnimal.addActionListener(new ActionListener() {
+        JLabel labelIdPaciente = new JLabel("ID do Paciente:");
+        labelIdPaciente.setForeground(Color.BLACK);
+        campoIdPaciente = new JTextField(20);
+        campoIdPaciente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                preencherInformacoesAnimal();
+                preencherInformacoesPaciente();
             }
         });
 
-        JLabel labelNome = new JLabel("Nome:");
-        labelNome.setForeground(Color.BLACK);
-        campoNome = new JTextField(20);
-        campoNome.setEditable(false);
+        // nome
+        JLabel labelNomePessoa = new JLabel("Nome Completo:");
+        labelNomePessoa.setForeground(Color.BLACK);
+        campoNomePessoa = new JTextField(20);
+        campoNomePessoa.setEditable(false);
 
-        JLabel labelEspecie = new JLabel("E-mail:");
-        labelEspecie.setForeground(Color.BLACK);
-        campoEspecie = new JTextField(20);
-        campoEspecie.setEditable(false);
+        // sexo
+        JLabel labelSexo = new JLabel("Sexo:");
+        labelSexo.setForeground(Color.BLACK);
+        campoSexo = new JTextField(20);
+        campoSexo.setEditable(false);
 
-        JLabel labelRaca = new JLabel("Nacionalidade:");
+        // raca
+        JLabel labelRaca = new JLabel("Estado civil:");
         labelRaca.setForeground(Color.BLACK);
         campoRaca = new JTextField(20);
         campoRaca.setEditable(false);
 
-        JLabel labelCor = new JLabel("Estado civil:");
-        labelCor.setForeground(Color.BLACK);
-        campoCor = new JTextField(20);
-        campoCor.setEditable(false);
+        JLabel labelCorPele = new JLabel("Nacionalidade:");
+        labelCorPele.setForeground(Color.BLACK);
+        campoCorPele = new JTextField(20);
+        campoCorPele.setEditable(false);
 
         JLabel labelPeso = new JLabel("Peso:");
         labelPeso.setForeground(Color.BLACK);
         campoPeso = new JTextField(20);
         campoPeso.setEditable(false);
 
-        JLabel labelCpfTutor = new JLabel("CPF do Tutor:");
-        labelCpfTutor.setForeground(Color.BLACK);
-        campoCpfTutor = new JTextField(20);
-        campoCpfTutor.setEditable(false);
+        JLabel labelCpf = new JLabel("CPF:");
+        labelCpf.setForeground(Color.BLACK);
+        campoCpf = new JTextField(20);
+        campoCpf.setEditable(false);
 
         JLabel labelIdade = new JLabel("Idade:");
         labelIdade.setForeground(Color.BLACK);
         campoIdade = new JTextField(20);
         campoIdade.setEditable(false);
 
-        addComponent(gbc, labelIdAnimal, 0, 1);
-        addComponent(gbc, campoIdAnimal, 1, 1);
+        addComponent(gbc, labelIdPaciente, 0, 1);
+        addComponent(gbc, campoIdPaciente, 1, 1);
         gbc.gridx = 2;
         gbc.gridy = 1;
-        add(botaoEditar, gbc); // Botão Editar ao lado do ID do Animal
+        add(botaoEditar, gbc);
 
-        addComponent(gbc, labelNome, 0, 2);
-        addComponent(gbc, campoNome, 1, 2);
-        addComponent(gbc, labelEspecie, 0, 3);
-        addComponent(gbc, campoEspecie, 1, 3);
+        addComponent(gbc, labelNomePessoa, 0, 2);
+        addComponent(gbc, campoNomePessoa, 1, 2);
+        addComponent(gbc, labelSexo, 0, 3);
+        addComponent(gbc, campoSexo, 1, 3);
         addComponent(gbc, labelRaca, 0, 4);
         addComponent(gbc, campoRaca, 1, 4);
-        addComponent(gbc, labelCor, 0, 5);
-        addComponent(gbc, campoCor, 1, 5);
+        addComponent(gbc, labelCorPele, 0, 5);
+        addComponent(gbc, campoCorPele, 1, 5);
         addComponent(gbc, labelPeso, 0, 6);
         addComponent(gbc, campoPeso, 1, 6);
-        addComponent(gbc, labelCpfTutor, 0, 7);
-        addComponent(gbc, campoCpfTutor, 1, 7);
+        addComponent(gbc, labelCpf, 0, 7);
+        addComponent(gbc, campoCpf, 1, 7);
         addComponent(gbc, labelIdade, 0, 8);
         addComponent(gbc, campoIdade, 1, 8);
 
         gbc.gridx = 1;
         gbc.gridy = 9;
-        add(btnSalvar, gbc); // Botão Salvar embaixo de tudo
+        add(btnSalvar, gbc);
     }
 
     private void addComponent(GridBagConstraints gbc, Component component, int x, int y) {
@@ -145,8 +148,8 @@ public class ProntuarioAnimal extends JFrame {
         add(component, gbc);
     }
 
-    private void preencherInformacoesAnimal() {
-        String id = campoIdAnimal.getText().trim();
+    private void preencherInformacoesPaciente() {
+        String id = campoIdPaciente.getText().trim();
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             String sql = "SELECT * FROM TBL_FICHA WHERE ID = ?";
@@ -154,21 +157,21 @@ public class ProntuarioAnimal extends JFrame {
                 stmt.setString(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        campoNome.setText(rs.getString("NOME"));
-                        campoEspecie.setText(rs.getString("ESPECIE"));
+                        campoNomePessoa.setText(rs.getString("NOME"));
+                        campoSexo.setText(rs.getString("SEXO"));
                         campoRaca.setText(rs.getString("RACA"));
-                        campoCor.setText(rs.getString("COR_PELAGEM"));
+                        campoCorPele.setText(rs.getString("COR_PELE"));
                         campoPeso.setText(rs.getString("PESO"));
-                        campoCpfTutor.setText(rs.getString("CPF_DONO"));
+                        campoCpf.setText(rs.getString("CPF"));
                         campoIdade.setText(calculateAge(rs.getDate("DATA_NASCIMENTO")));
                     } else {
-                        JOptionPane.showMessageDialog(this, "Animal não encontrado.");
+                        JOptionPane.showMessageDialog(this, "Paciente não encontrado.");
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erro ao buscar dados do animal.");
+            JOptionPane.showMessageDialog(this, "Erro ao buscar dados do paciente.");
         }
     }
 
@@ -179,100 +182,88 @@ public class ProntuarioAnimal extends JFrame {
         return String.valueOf(ageInYears);
     }
 
-    private void criarNovoAnimal() {
-        campoIdAnimal.setText("");
-        campoNome.setText("");
-        campoEspecie.setText("");
+    private void criarNovoPaciente() {
+        campoIdPaciente.setText("");
+        campoNomePessoa.setText("");
+        campoSexo.setText("");
         campoRaca.setText("");
-        campoCor.setText("");
+        campoCorPele.setText("");
         campoPeso.setText("");
-        campoCpfTutor.setText("");
+        campoCpf.setText("");
         campoIdade.setText("");
 
-        campoNome.setEditable(true);
-        campoEspecie.setEditable(true);
+        campoNomePessoa.setEditable(true);
+        campoSexo.setEditable(true);
         campoRaca.setEditable(true);
-        campoCor.setEditable(true);
+        campoCorPele.setEditable(true);
         campoPeso.setEditable(true);
-        campoCpfTutor.setEditable(true);
+        campoCpf.setEditable(true);
         campoIdade.setEditable(true);
 
         isEditing = false;
     }
 
     private void habilitarEdicao() {
-        campoNome.setEditable(true);
-        campoEspecie.setEditable(true);
+        campoNomePessoa.setEditable(true);
+        campoSexo.setEditable(true);
         campoRaca.setEditable(true);
-        campoCor.setEditable(true);
+        campoCorPele.setEditable(true);
         campoPeso.setEditable(true);
-        campoCpfTutor.setEditable(true);
+        campoCpf.setEditable(true);
         campoIdade.setEditable(true);
 
         isEditing = true;
     }
 
-    private void salvarAnimal() {
-        String id = campoIdAnimal.getText().trim();
-        String nome = campoNome.getText().trim();
-        String especie = campoEspecie.getText().trim();
+    private void salvarPaciente() {
+        String id = campoIdPaciente.getText().trim();
+        String nomePessoa = campoNomePessoa.getText().trim();
+        String sexo = campoSexo.getText().trim();
         String raca = campoRaca.getText().trim();
-        String cor = campoCor.getText().trim();
+        String corPele = campoCorPele.getText().trim();
         String peso = campoPeso.getText().trim();
-        String cpfTutor = campoCpfTutor.getText().trim();
+        String cpf = campoCpf.getText().trim();
         int idade = Integer.parseInt(campoIdade.getText().trim());
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             if (isEditing) {
-                String sql = "UPDATE TBL_FICHA SET NOME = ?, ESPECIE = ?, RACA = ?, COR_PELAGEM = ?, PESO = ?, CPF_DONO = ?, DATA_NASCIMENTO = ? WHERE ID = ?";
+                String sql = "UPDATE TBL_FICHA SET NOME = ?, SEXO = ?, RACA = ?, COR_PELE = ?, PESO = ?, CPF = ?, DATA_NASCIMENTO = ? WHERE ID = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                    stmt.setString(1, nome);
-                    stmt.setString(2, especie);
+                    stmt.setString(1, nomePessoa);
+                    stmt.setString(2, sexo);
                     stmt.setString(3, raca);
-                    stmt.setString(4, cor);
+                    stmt.setString(4, corPele);
                     stmt.setString(5, peso);
-                    stmt.setString(6, cpfTutor);
-                    java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
+                    stmt.setString(6, cpf);
+                    java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long) idade * 365 * 24 * 60 * 60 * 1000);
                     stmt.setDate(7, dataNascimento);
                     stmt.setString(8, id);
                     stmt.executeUpdate();
-                    JOptionPane.showMessageDialog(this, "Animal atualizado com sucesso!");
+                    JOptionPane.showMessageDialog(this, "Paciente atualizado com sucesso!");
                 }
             } else {
-                String sql = "INSERT INTO TBL_FICHA (ID, NOME, ESPECIE, RACA, COR_PELAGEM, PESO, CPF_DONO, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO TBL_FICHA (ID, NOME, SEXO, RACA, COR_PELE, PESO, CPF, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                     stmt.setString(1, id);
-                    stmt.setString(2, nome);
-                    stmt.setString(3, especie);
+                    stmt.setString(2, nomePessoa);
+                    stmt.setString(3, sexo);
                     stmt.setString(4, raca);
-                    stmt.setString(5, cor);
+                    stmt.setString(5, corPele);
                     stmt.setString(6, peso);
-                    stmt.setString(7, cpfTutor);
-                    java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
+                    stmt.setString(7, cpf);
+                    java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long) idade * 365 * 24 * 60 * 60 * 1000);
                     stmt.setDate(8, dataNascimento);
                     stmt.executeUpdate();
-                    JOptionPane.showMessageDialog(this, "Animal cadastrado com sucesso!");
+                    JOptionPane.showMessageDialog(this, "Novo paciente salvo com sucesso!");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erro ao salvar os dados do animal.");
+            JOptionPane.showMessageDialog(this, "Erro ao salvar paciente.");
         }
-
-        campoNome.setEditable(false);
-        campoEspecie.setEditable(false);
-        campoRaca.setEditable(false);
-        campoCor.setEditable(false);
-        campoPeso.setEditable(false);
-        campoCpfTutor.setEditable(false);
-        campoIdade.setEditable(false);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new ProntuarioAnimal();
-            }
-        });
+        new Prontuario();
     }
 }
