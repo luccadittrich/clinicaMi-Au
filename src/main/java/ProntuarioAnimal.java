@@ -50,6 +50,20 @@ public class ProntuarioAnimal extends JFrame {
             }
         });
 
+        JButton botaoExcluir = new JButton("Excluir");
+        botaoExcluir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                excluir();
+            }
+        });
+
+
+        botaoEditar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                habilitarEdicao();
+            }
+        });
+
         btnSalvar = new JButton("Salvar");
         btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -69,7 +83,7 @@ public class ProntuarioAnimal extends JFrame {
 
         gbc.gridwidth = 1;
 
-        JLabel labelIdAnimal = new JLabel("ID do Animal:");
+        JLabel labelIdAnimal = new JLabel("ID Paciente:");
         labelIdAnimal.setForeground(Color.BLACK);
         campoIdAnimal = new JTextField(20);
         campoIdAnimal.addActionListener(new ActionListener() {
@@ -119,6 +133,12 @@ public class ProntuarioAnimal extends JFrame {
         gbc.gridy = 1;
         add(botaoEditar, gbc); // Botão Editar ao lado do ID do Animal
 
+
+        gbc.gridx = 3; // Nova posição para o botão Excluir
+        gbc.gridy = 1; // Mesma linha que o ID do Animal
+        add(botaoExcluir, gbc); // Botão Excluir ao lado do Editar
+
+
         addComponent(gbc, labelNome, 0, 2);
         addComponent(gbc, campoNome, 1, 2);
         addComponent(gbc, labelEspecie, 0, 3);
@@ -145,6 +165,7 @@ public class ProntuarioAnimal extends JFrame {
         add(component, gbc);
     }
 
+
     private void preencherInformacoesAnimal() {
         String id = campoIdAnimal.getText().trim();
 
@@ -162,7 +183,7 @@ public class ProntuarioAnimal extends JFrame {
                         campoCpfTutor.setText(rs.getString("CPF_DONO"));
                         campoIdade.setText(calculateAge(rs.getDate("DATA_NASCIMENTO")));
                     } else {
-                        JOptionPane.showMessageDialog(this, "Animal não encontrado.");
+                        JOptionPane.showMessageDialog(this, "Paciente não encontrado.");
                     }
                 }
             }
@@ -212,6 +233,56 @@ public class ProntuarioAnimal extends JFrame {
         isEditing = true;
     }
 
+    private void excluir() {
+        String id = campoIdAnimal.getText().trim();
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Informe o ID para excluir.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try (Connection conn = DatabaseConnection.getConnection()) {
+
+
+                String sql = "DELETE FROM TBL_FICHA WHERE ID = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, id);
+                    int rowsAffected = stmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(this, "excluído com sucesso!");
+                        limparCampos(); // Limpa os campos após a exclusão
+                    } else {
+                        JOptionPane.showMessageDialog(this, "não encontrado.");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("____________________________");
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Erro ao excluir.");
+            }
+        }
+    }
+
+    private void limparCampos() {
+        campoIdAnimal.setText("");
+        campoNome.setText("");
+        campoEspecie.setText("");
+        campoRaca.setText("");
+        campoCor.setText("");
+        campoPeso.setText("");
+        campoCpfTutor.setText("");
+        campoIdade.setText("");
+
+        campoNome.setEditable(false);
+        campoEspecie.setEditable(false);
+        campoRaca.setEditable(false);
+        campoCor.setEditable(false);
+        campoPeso.setEditable(false);
+        campoCpfTutor.setEditable(false);
+        campoIdade.setEditable(false);
+    }
+
     private void salvarAnimal() {
         String id = campoIdAnimal.getText().trim();
         String nome = campoNome.getText().trim();
@@ -236,7 +307,7 @@ public class ProntuarioAnimal extends JFrame {
                     stmt.setDate(7, dataNascimento);
                     stmt.setString(8, id);
                     stmt.executeUpdate();
-                    JOptionPane.showMessageDialog(this, "Animal atualizado com sucesso!");
+                    JOptionPane.showMessageDialog(this, "Paciente atualizado com sucesso!");
                 }
             } else {
                 String sql = "INSERT INTO TBL_FICHA (ID, NOME, ESPECIE, RACA, COR_PELAGEM, PESO, CPF_DONO, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -251,7 +322,7 @@ public class ProntuarioAnimal extends JFrame {
                     java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
                     stmt.setDate(8, dataNascimento);
                     stmt.executeUpdate();
-                    JOptionPane.showMessageDialog(this, "Animal cadastrado com sucesso!");
+                    JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
                 }
             }
         } catch (Exception e) {

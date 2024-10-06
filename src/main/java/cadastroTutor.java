@@ -22,7 +22,7 @@ public class cadastroTutor extends JFrame {
 
     public cadastroTutor() {
         // Configura a frame principal
-        setTitle("Cadastro de Tutor");
+        setTitle("Cadastro de Acompanhante");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 500);
 
@@ -33,7 +33,7 @@ public class cadastroTutor extends JFrame {
         gbc.insets = new Insets(6, 6, 6, 6);
 
         // Adiciona o título
-        JLabel titleLabel = new JLabel("Cadastro do Tutor");
+        JLabel titleLabel = new JLabel("Cadastro do Acompanhante");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titleLabel);
@@ -171,7 +171,7 @@ public class cadastroTutor extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Executa o cadastroTutor
+        // Executa o cadastroAcompanhante
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new cadastroTutor().setVisible(true);

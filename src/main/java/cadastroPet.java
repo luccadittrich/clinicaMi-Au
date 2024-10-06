@@ -19,7 +19,7 @@ public class cadastroPet extends JFrame {
     private JTextField campoIdade;
 
     public cadastroPet() {
-        setTitle("Cadastro de Animais");
+        setTitle("Cadastro de Paciente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
 
@@ -30,7 +30,7 @@ public class cadastroPet extends JFrame {
         gbc.insets = new Insets(6, 6, 6, 6);
 
         // Adicionar o título
-        JLabel titleLabel = new JLabel("Cadastro do Pet");
+        JLabel titleLabel = new JLabel("Cadastro do Paciente");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titleLabel);
@@ -158,7 +158,7 @@ public class cadastroPet extends JFrame {
                 java.sql.Date dataNascimento = new java.sql.Date(System.currentTimeMillis() - (long)idade * 365 * 24 * 60 * 60 * 1000);
                 stmt.setDate(8, dataNascimento);
                 stmt.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Animal cadastrado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Paciente cadastrado com sucesso!");
             }
         } catch (Exception e) {
             e.printStackTrace();

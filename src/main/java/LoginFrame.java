@@ -20,10 +20,17 @@ public class LoginFrame extends JFrame {
         passwordField = new JPasswordField(20);
 
         JButton loginButton = new JButton("Login");
+        JButton signUpButton = new JButton("Criar conta");
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 login();
+            }
+        });
+
+        signUpButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
 
@@ -32,6 +39,7 @@ public class LoginFrame extends JFrame {
         panel.add(new JLabel("Senha:"));
         panel.add(passwordField);
         panel.add(loginButton);
+        panel.add(signUpButton);
 
         add(panel);
     }
