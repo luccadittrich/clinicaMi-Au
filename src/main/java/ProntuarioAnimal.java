@@ -189,7 +189,7 @@ public class ProntuarioAnimal extends JFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erro ao buscar dados do animal.");
+            JOptionPane.showMessageDialog(this, "Erro ao buscar dados do Paciente.");
         }
     }
 
@@ -327,7 +327,7 @@ public class ProntuarioAnimal extends JFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erro ao salvar os dados do animal.");
+            JOptionPane.showMessageDialog(this, "Erro ao salvar os dados do Paciente.");
         }
 
         campoNome.setEditable(false);
